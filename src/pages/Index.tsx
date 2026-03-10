@@ -55,7 +55,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 export default function Index() {
-  const [form, setForm] = useState({ name: "", phone: "", message: "" });
+  const [form, setForm] = useState({ name: "", tg: "", message: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "ok" | "err">("idle");
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -81,7 +81,7 @@ export default function Index() {
       });
       if (res.ok) {
         setStatus("ok");
-        setForm({ name: "", phone: "", message: "" });
+        setForm({ name: "", tg: "", message: "" });
       } else {
         setStatus("err");
       }
@@ -305,13 +305,17 @@ export default function Index() {
                   onChange={e => setForm({ ...form, name: e.target.value })}
                   required
                 />
-                <input
-                  type="tel"
-                  placeholder="Телефон"
-                  value={form.phone}
-                  onChange={e => setForm({ ...form, phone: e.target.value })}
-                  required
-                />
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-ibm font-light select-none">@</span>
+                  <input
+                    type="text"
+                    placeholder="юзернейм в Telegram"
+                    value={form.tg}
+                    onChange={e => setForm({ ...form, tg: e.target.value.replace(/^@/, "") })}
+                    required
+                    style={{ paddingLeft: "1.75rem" }}
+                  />
+                </div>
                 <textarea
                   placeholder="Кратко опишите ситуацию"
                   rows={5}

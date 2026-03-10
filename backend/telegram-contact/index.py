@@ -18,14 +18,14 @@ def handler(event: dict, context) -> dict:
 
     body = json.loads(event.get('body') or '{}')
     name = body.get('name', '').strip()
-    phone = body.get('phone', '').strip()
+    tg = body.get('tg', '').strip().lstrip('@')
     message = body.get('message', '').strip()
 
-    if not name or not phone:
+    if not name or not tg:
         return {
             'statusCode': 400,
             'headers': cors_headers,
-            'body': json.dumps({'error': 'Имя и телефон обязательны'}, ensure_ascii=False)
+            'body': json.dumps({'error': 'Имя и Telegram обязательны'}, ensure_ascii=False)
         }
 
     token = os.environ['TELEGRAM_BOT_TOKEN']
@@ -34,7 +34,7 @@ def handler(event: dict, context) -> dict:
     text = (
         f"🕵️ *Новая заявка с сайта Детективы*\n\n"
         f"👤 *Имя:* {name}\n"
-        f"📞 *Телефон:* {phone}\n"
+        f"✈️ *Telegram:* @{tg}\n"
         f"💬 *Сообщение:* {message or 'не указано'}"
     )
 
